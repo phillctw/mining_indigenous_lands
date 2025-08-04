@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mining in indigenous lands</title>
+
+  <!-- Google fonts -->
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Baskervville:ital,
+  wght@1,400..700&family=Lora:ital,wght@0,400..700;1,400..700&display=swap"
+    rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-size: 20px;
+      font-family: 'Baskervville', serif;
+      text-rendering: optimizeLegibility;
+      background: #e4cbbd
+    }
+
+    .content {
+      max-width: 640px;
+      margin: auto;
+    }
+
+    .header {
+      padding: 3em 0;
+    }
+
+    a {
+      color: #f05349;
+    }
+
+    .footer {
+      background: #f4f4f4;
+      text-align: center;
+      font-size: 0.8em;
+      margin-top: 4em;
+      padding: 4em 0;
+    }
+
+    figure {
+      margin: 0;
+      padding-bottom: 1.2em;
+    }
+
+    figcaption {
+      font-size: 0.8em;
+      text-align: center;
+      margin-top: 0.5em;
+      color: #666;
+    }
+
+    h1 {
+      font-family: 'Lora', serif;
+      font-weight: 700;
+      font-size: 3em;
+      line-height: 1.1;
+    }
+
+    .subhead {
+      font-family: 'Lora', serif;
+      font-weight: 500;
+      font-size: 1em;
+      font-style: italic;
+    }
+
+    iframe,
+    img,
+    video {
+      max-width: 100%;
+    }
+
+    p {
+      line-height: 1.6;
+      margin: 0;
+      padding-bottom: 1.2em;
+    }
+
+    ul {
+      margin: 0;
+      padding-bottom: 1em;
+      line-height: 1.6;
+    }
+
+    iframe {
+      padding-bottom: 1.2em;
+    }
+
+    .full-width figure {
+      text-align: center;
+    }
+
+    code {
+      font-family: 'Courier New', monospace;
+      background: #fff880;
+    }
+    #chart-container {
+            width: 90%;
+            max-width: 1200px;
+            background-color: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+            padding: 2rem;
+            box-sizing: border-box;
+        }
+    #chart-container h1 {
+        font-size: 1.5em; 
+    }
+    
+    #chart-container h2 {
+        font-family: 'Lora', serif;
+        font-weight: normal;
+        font-size: 0.8em;
+        line-height: 1.4;
+        margin-top: -1rem;
+        margin-bottom: 2rem;
+        color: #555;
+    }
+
+        svg {
+            width: 100%;
+            height: auto;
+        }
+
+        .tile rect {
+            stroke: #fff;
+            stroke-width: 2px;
+            transition: fill 0.3s ease;
+        }
+
+        .tile:hover rect {
+            fill-opacity: 0.8;
+        }
+
+        .tile text {
+            font-weight: 600;
+            fill: #ffffff;
+            pointer-events: none; 
+            text-shadow: 0 1px 3px rgba(0,0,0,0.4);
+        }
+
+        #tooltip {
+            position: absolute;
+            background-color: rgba(0, 0, 0, 0.8);
+            color: #fff;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 14px;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.2s ease, transform 0.2s ease;
+            transform: translate(-50%, -110%);
+        }   
+
+    /* margin on mobile */
+    @media (max-width: 640px) {
+      body {
+        font-size: 18px;
+      }
+
+      .content {
+        padding-left: 0.5em;
+        padding-right: 0.5em;
+      }
+
+    }
+  </style>
+  <link href="scrolly-styles.css" rel="stylesheet">
+  <script src="https://unpkg.com/intersection-observer@0.5.1/intersection-observer.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/scrollama/3.2.0/scrollama.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.3.0/d3.min.js"></script>
+</head>
+
+<body>
+  <div class="content">
+    <div class="header">
+      <h1>Pushing for Mining Within Indigenous Lands in Brazil</h1>
+      <p class="subhead">Indigenous territories are legally protected, yet mining companies 
+        continue to pursue access.</p>
+    </div>
+    <div class="byline">
+      <p>By <strong>Phillippe Watanabe</strong></p>
+    </div>
+    <p>In Brazil's Indigenous lands, danger lurks outside the forest. While Indigenous communities coexist 
+      with and respect nature, companies and non-Indigenous individuals attempt to register areas within these 
+      protected zones for mining."</p>
+    </p>
+  </div>
+  <section id="scrolly-images" class="scrolly-container">
+    <div class="sticky-thing">
+      <img src="base_page.png" class="base-image" id="layer-base">
+      <img src="labels-ind.png" class="overlay-layer" id="layer-labels">
+      <img src="ind_lands.png" class="overlay-layer" id="layer-ind-land">
+      <img src="top_lands.png" class="overlay-layer" id="layer-top-lands">
+      <img src="mining.png" class="overlay-layer" id="layer-mining">
+      <img src="top-mining.png" class="overlay-layer" id="layer-new-labels">
+    </div>
+    <div class="steps-container">
+      <div class="step" id="step1">
+        <div>
+          <p>In Brazil, Indigenous peoples' rights—including their land rights—were officially recognized 
+            in the 1988 Constitution.</p>
+        </div>
+      </div>
+      <div class="step" id="step2">
+        <p>Brazil has 638 Indigenous lands, according to data from Funai (National Indigenous Foundation). Most 
+          are already regularized (490), while the remainder are at various stages of the regularization process.</p>
+      </div>
+      <div class="step" id="step3">
+        <p>"Data from Brazil's National Mining Agency (ANM) shows that between 1941 and 2025, there were 2,633 requests 
+          to open mining operations within Indigenous lands."</p>
+      </div>
+      <div class="step" id="step4">
+        <p>Some Indigenous lands face greater pressure from mining requests. The Kayapó territory has 115 
+          registered mining processes. Other areas known for mining conflicts include the Munduruku (72 processes) 
+          and Apyterewa (56).</p>
+        
+    </div>
+  </section>
+  <div class="content">
+    <p>The push for gold in the Amazon—and within Indigenous lands—is not new in Brazil. 
+      In the late 1980s and early 1990s, gold miners swarmed Yanomami land in Roraima. 
+      It wasn't until 1992 that the territory was officially demarcated as Indigenous.</p>
+    <p>But that wasn't enough to prevent what was later known as the Haximu massacre, 
+      when a group of illegal gold miners killed 16 Yanomami people.</p>
+    <p>The demarcation helped reduce the presence of intruders, but in recent years, 
+      illegal mining has worsened once again.</p> 
+
+
+  </div>
+  <div class="full-width">
+    <figure>
+      <img
+        src="//live.staticflickr.com/1827/42310837384_cb5306a6e5_k.jpg">
+      <figcaption>Ibama disables illegal mining equipment in Munduruku Indigenous Land, in Pará</figcaption>
+    </figure>
+  </div>
+  <div class="content">
+   
+   <p>However, setting aside the issue of illegal mining within protected areas, this analysis focuses on 
+    companies and individuals who are legally attempting to mine within Indigenous lands across Brazil. These 
+    legal requests can be seen as a form of pressure to legitimize the idea that mining in these territories 
+    should be allowed—despite the fact that the Brazilian Constitution currently prohibits it.</p>
+   
+   <p>To be legally authorized to explore mineral resources in Brazil, individuals or companies must register the 
+    exact coordinates of the area they intend to explore. This analysis cross-referenced those registered coordinates
+     with the official boundaries of Indigenous lands.</p>
+   
+   <p>And contrary to what one might expect, the situation doesn't appear to be improving—recent years dominate the 
+    ranking of mining requests. The analysis shows that nearly 50% of all processes were initiated after 2010.</p>
+
+   <p>Interestingly, three of the four years during Jair Bolsonaro's presidency rank among those with the highest 
+    number of mining requests inside Indigenous lands. Throughout his time in office, Bolsonaro openly championed 
+    the economic exploitation of these protected territories.</p>
+   
+    <figure>
+      <img
+        src="changes-mining-requests.svg">
+    </figure>
+    
+  <div class="content">
+
+    <p>Generally, the first step to begin mining is submitting a Permit Application. This is also the most common type 
+      of request within Indigenous lands in the ANM dataset, accounting for 1,277 processes.</p>
+    <p>There are also a significant number of processes in later stages, such as exploration permits (587). This second 
+      stage involves granting mineral rights to carry out activities like defining the mineral deposit, evaluating it, 
+      and determining the feasibility of economic extraction. In other words, mineral exploration may already 
+      be underway.</p>
+    <p>Additionally, there are 294 processes related to mining permit applications, representing an even more advanced 
+      stage in the mining approval process.</p>
+    <p>While this analysis isn't limited to gold mining—since companies and individuals are seeking to exploit numerous 
+      other minerals within Indigenous lands—gold remains the primary focus for those lurking near these protected areas.</p>
+
+<div id="chart-container">
+        <h1 style="text-align: center;">Gold is the 
+            main driver behind company requests to mine within Indigenous territories</h1>
+        <h2 style="text-align: center; font-weight:normal"> Most gold exploration 
+        requests are concentrated in Amazonian states like Pará, 
+            Amazonas, Roraima, and Mato Grosso.</h2>
+        <div id="treemap"></div>
+    </div>
+    <div id="tooltip"></div>
+  
+ <p>Today, the Indigenous peoples most affected by mining pressure are the Kayapó (with 345 processes registered 
+  within their territories —not all Kayapó live in the Kayapó land), the Munduruku, the Guarani Mbya, the Mura, and 
+  the Yanomami.</p>
+
+ <p>"Extractive industry activities, in particular mining, oil and gas, and logging projects,
+have long constituted 'the most pervasive source of the challenges to the full exercise of 
+  
+  <div class="footer">
+    <div class="content">
+      <p>You can find the code used in this page <a href="https://github.com/jsoma/page-templates/">here</a>.</p>
+    </div>
+  </div>
+
+  <script>
+  
+    (function() {
+      const scroller = scrollama()
+
+      scroller
+        .setup({
+          parent: document.querySelector("#scrolly-images"),
+          step: ".step",
+          offset: 0.5,
+          debug: false,
+        })
+        .onStepEnter(function ({ element, index, direction }) {
+          const event = new CustomEvent("stepin", { detail: { direction: direction } })
+          element.dispatchEvent(event)
+        })
+        .onStepExit(function ({ element, index, direction }) {
+          const event = new CustomEvent("stepout", { detail: { direction: direction } })
+          if (direction === "up" && element.previousElementSibling) {
+            const event = new CustomEvent("stepin", { detail: { direction: direction } })
+            element.previousElementSibling.dispatchEvent(event)
+          }
+        })
+
+      window.addEventListener("resize", scroller.resize)
+    })()
+
+    d3.select("#step1").on('stepin', (e) => {
+      d3.selectAll(".overlay-layer").style("opacity", 0);
+    })
+
+    d3.select("#step2").on('stepin', (e) => {
+      d3.selectAll(".overlay-layer").style("opacity", 0);
+      d3.select(e.target.closest(".scrolly-container")).select("#layer-ind-land").style("opacity", 1);
+    })
+
+    d3.select("#step3").on('stepin', (e) => {
+      d3.selectAll(".overlay-layer").style("opacity", 0);
+      d3.select(e.target.closest(".scrolly-container")).select("#layer-ind-land").style("opacity", 1);
+      d3.select(e.target.closest(".scrolly-container")).select("#layer-top-lands").style("opacity", 1);
+      d3.select(e.target.closest(".scrolly-container")).select("#layer-mining").style("opacity", 1);
+     })
+
+    d3.select("#step4").on('stepin', (e) => {
+      d3.selectAll(".overlay-layer").style("opacity", 0);
+      d3.select(e.target.closest(".scrolly-container")).select("#layer-mining").style("opacity", 0);
+      d3.select(e.target.closest(".scrolly-container")).select("#layer-top-lands").style("opacity", 0);
+      d3.select(e.target.closest(".scrolly-container")).select("#layer-new-labels").style("opacity", 1);
+ 
+    })
+
+    d3.select("#step5").on('stepin', (e) => {
+    })
+  </script>
+  <style>
+    .step {
+      margin-bottom: 70vh;
+    }
+  </style>
+
+    <script>
+        const rawData = [
+            { SUBS: 'Gold', count: 997 },
+            { SUBS: 'Sand', count: 259 },
+            { SUBS: 'Copper', count: 200 },
+            { SUBS: 'Cassiterite', count: 168 },
+            { SUBS: 'Potassium salts', count: 73 },
+            { SUBS: 'Null', count: 66 },
+            { SUBS: 'Bauxite', count: 63 },
+            { SUBS: 'Granite', count: 59 },
+            { SUBS: 'Iron ore', count: 50 },
+            { SUBS: 'Diamond', count: 43 },
+            { SUBS: 'Others', count: 657 }
+        ];
+
+        const hierarchicalData = {
+            name: "Substances",
+            children: rawData.map(d => ({ name: d.SUBS, value: d.count }))
+        };
+
+        const container = d3.select("#treemap");
+        const tooltip = d3.select("#tooltip");
+
+        function drawChart() {
+            container.selectAll("*").remove();
+            
+            const width = container.node().getBoundingClientRect().width;
+            const height = width * 0.6; 
+
+            const svg = container.append("svg")
+                .attr("viewBox", `0 0 ${width} ${height}`)
+                .style("display", "block");
+
+            const root = d3.hierarchy(hierarchicalData)
+                .sum(d => d.value)
+                .sort((a, b) => b.value - a.value); 
+
+            const treemapLayout = d3.treemap()
+                .size([width, height])
+                .paddingInner(4)
+                .paddingOuter(8); 
+
+            treemapLayout(root);
+
+            const colorScale = d3.scaleOrdinal(d3.schemeSet1);
+
+            const cells = svg.selectAll("g.tile")
+                .data(root.leaves()) 
+                .enter()
+                .append("g")
+                .attr("class", "tile")
+                .attr("transform", d => `translate(${d.x0}, ${d.y0})`);
+
+            cells.append("rect")
+                .attr("width", d => d.x1 - d.x0)
+                .attr("height", d => d.y1 - d.y0)
+                .attr("fill", d => colorScale(d.data.name));
+
+  
+            cells.append("text")
+                .selectAll("tspan")
+                .data(d => {
+                    const words = d.data.name.split(/(?=[A-Z][a-z])|\s+/g);
+                    return words.map(word => ({ text: word, x0: d.x0, y0: d.y0, width: d.x1 - d.x0 }));
+                })
+                .enter()
+                .append("tspan")
+                .attr("x", 4)
+                .attr("y", (d, i) => 15 + i * 14) 
+                .text(d => d.text)
+                .each(function(d) {
+                    if (this.getComputedTextLength() > d.width - 8) {
+                        d3.select(this).style("display", "none");
+                    }
+                });
+            
+            cells.append("text")
+                .attr("x", 4)
+                .attr("y", d => (d.y1 - d.y0) - 8) 
+                .text(d => d.data.value.toLocaleString())
+                .style("font-size", "0.8em")
+                .style("opacity", 0.8);
+
+
+            cells
+                .on("mousemove", (event, d) => {
+                    tooltip
+                        .style("opacity", 1)
+                        .style("left", `${event.pageX}px`)
+                        .style("top", `${event.pageY}px`)
+                        .html(`<strong>${d.data.name}</strong><br/>Count: ${d.data.value.toLocaleString()}`);
+                })
+                .on("mouseout", () => {
+                    tooltip.style("opacity", 0);
+                });
+        }
+
+       
+        drawChart();
+
+        window.addEventListener('resize', drawChart);
+    </script>
+</body>
+
+</html>
