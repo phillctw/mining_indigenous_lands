@@ -15,12 +15,7 @@
     transition: transform 1s ease-in-out;
     cursor: pointer;
     background-color: white;
-    /* Center everything inside */
-    /* display: flex;
-    justify-content: center;
-    flex-direction: column;
-    justify-content: center;
-    overflow: hidden; */
+
 }
 
 .sticky-thing:hover {
@@ -53,7 +48,6 @@
     display: block;  
 }
 
-/* Overlay layer styles */
 .overlay-layer {
     position: absolute;
     top: 0;
@@ -72,7 +66,6 @@
     z-index: 1;
 }
 
-/* Ensure proper layering */
 .sticky-thing > img {
     position: absolute;
     top: 0;
@@ -82,8 +75,6 @@
     object-fit: cover;
 }
 
-/* Make ocean areas transparent to match background */
-/* Target common ocean/background colors */
 .overlay-layer path[fill="#ffffff"],
 .overlay-layer path[fill="#f0f0f0"],
 .overlay-layer path[fill="#e0e0e0"],
@@ -107,7 +98,6 @@
     fill: transparent !important;
 }
 
-/* Also target the base image */
 .base-image path[fill="#ffffff"],
 .base-image path[fill="#f0f0f0"],
 .base-image path[fill="#e0e0e0"],
@@ -131,7 +121,6 @@
     fill: transparent !important;
 }
 
-/* Ensure base image is always visible */
 #layer-background {
     opacity: 1 !important;
     z-index: 1;
@@ -200,7 +189,6 @@
     display: block;  
 }
 
-/* When it's less than 700 pixels wide, do normal scrollytelling */
 
 @media only screen and (min-width: 700px) {
     .scrolly-container.side-by-side {
@@ -217,7 +205,6 @@
     .scrolly-container.side-by-side .scrolly-overlay {
         margin-top: 70vh;
         order: 0;
-        /* Change these to adjust sizing options */
         min-width: 15rem;
         max-width: 20rem;
     }
